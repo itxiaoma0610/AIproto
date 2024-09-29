@@ -1,4 +1,4 @@
-module github.com/itxiaoma0610/AIproto
+module AIproto
 
 go 1.22.5
 
