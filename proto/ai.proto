@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package ai;
+
+option go_package = ".";
+
+message UserInfoRequest{
+  uint32  user_id = 1;
+}
+message UserInfoResponse{
+  uint32 user_id = 1;
+  string username = 2;
+}
+message UserCreateRequest{
+  string username = 1;
+  string password = 2;
+}
+message UserCreateResponse{
+  string err = 1;
+}
+
+service UserInfo{
+  rpc UserInfo(UserInfoRequest) returns(UserInfoResponse);
+}
+service UserAction{
+  rpc UserCreate(UserCreateRequest) returns(UserCreateResponse);
+}
+
+// goctl rpc protoc user/rpc/user.proto --go_out=user/rpc/types --go-grpc_out=user/rpc/types --zrpc_out=user/rpc/
+// goctl rpc protoc: 这部分表示使用 goctl 工具的 rpc 子命令来调用 protoc 编译器。
+// goctl 是一个用于快速生成 Go 代码的工具，特别适用于 gRPC 和微服务开发。
+// user/rpc/user.proto:
+//这是输入的 Proto 文件的路径。它定义了消息结构、服务及 RPC 接口
+// --go_out=user/rpc/types:这个参数告诉 protoc 在 user/rpc/types 目录下生成普通的 Go 文件（即定义的消息和数据结构）。
+// 生成的文件将包含与 proto 文件中定义的消息类型对应的 Go 结构体
+// --go-grpc_out=user/rpc/types:这个参数告诉 protoc 在 user/rpc/types 目录下生成 gRPC 客户端代码。
+// 生成的文件包含 gRPC 客户端代码，用于与 gRPC 服务器进行通信。
+// --zrpc_out=user/rpc:这个参数告诉 protoc 在 user/rpc 目录下生成 zrpc 包。
+// 生成的 zrpc 包包含 gRPC 服务的实现，包括服务端和客户端。
+
+// goctl rpc protoc ./proto/ai.proto --go_out=./proto --go-grpc_out=./proto --zrpc_out=. -m
